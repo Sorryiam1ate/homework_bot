@@ -32,7 +32,7 @@ HOMEWORK_VERDICTS = {
 
 
 def check_tokens():
-    """Проверка на наличие необходимых токенов в файле переменных среды"""
+    """Проверка на наличие необходимых токенов в файле переменных среды."""
     if (
         "PRACTICUM_TOKEN" in os.environ
         and "TELEGRAM_BOT_TOKEN" in os.environ
@@ -46,7 +46,7 @@ def check_tokens():
 
 
 def get_api_answer(timestamp):
-    """Метод запроса api для получения данных о домашних заданиях"""
+    """Метод запроса api для получения данных о домашних заданиях."""
     payload = {'from_date': timestamp}
     try:
         response = requests.get(
@@ -63,7 +63,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Метод проверка наличия ключей в словаре ответа на запрос"""
+    """Метод проверка наличия ключей в словаре ответа на запрос."""
     if not isinstance(response, dict):
         raise TypeError('Тип ответа не соответствует ожидаемому')
     if (
@@ -84,7 +84,7 @@ def check_response(response):
 
 
 def send_message(bot, message):
-    """Метод отправки сообщения ботом пользователю"""
+    """Метод отправки сообщения ботом пользователю."""
     chat_id = TELEGRAM_CHAT_ID
     try:
         bot.send_message(chat_id, message)
@@ -96,7 +96,7 @@ def send_message(bot, message):
 
 
 def parse_status(homework):
-    """Метод парсинга окончательного письма пользователю"""
+    """Метод парсинга окончательного письма пользователю."""
     try:
         name = homework['homework_name']
         status = homework['status']
