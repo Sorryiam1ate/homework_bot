@@ -3,7 +3,6 @@ import logging
 import time
 import requests
 
-from pprint import pprint
 from dotenv import load_dotenv
 import telebot
 from telebot import TeleBot
@@ -33,8 +32,7 @@ HOMEWORK_VERDICTS = {
 
 
 def check_tokens():
-    """Проверка на наличие необходимых токенов
-    в файле переменных среды"""
+    """Проверка на наличие необходимых токенов в файле переменных среды"""
     if (
         "PRACTICUM_TOKEN" in os.environ
         and "TELEGRAM_BOT_TOKEN" in os.environ
@@ -48,8 +46,7 @@ def check_tokens():
 
 
 def get_api_answer(timestamp):
-    """Метод запроса api для получения
-    данных о домашних заданиях"""
+    """Метод запроса api для получения данных о домашних заданиях"""
     payload = {'from_date': timestamp}
     try:
         response = requests.get(
@@ -66,8 +63,7 @@ def get_api_answer(timestamp):
 
 
 def check_response(response):
-    """Метод проверка наличия ключей
-    в словаре ответа на запрос"""
+    """Метод проверка наличия ключей в словаре ответа на запрос"""
     if not isinstance(response, dict):
         raise TypeError('Тип ответа не соответствует ожидаемому')
     if (
@@ -96,12 +92,11 @@ def send_message(bot, message):
         logging.error(e)
     else:
         logging.debug(
-            f"Сообщение отправлено: chat_id={chat_id}, message={message}")
+            f"Сообщение отправлено:chat_id={chat_id}, message={message}")
 
 
 def parse_status(homework):
-    """Метод возвращает письмо для отправки пользователю
-    с обновлёнными статусами домашних з аданий"""
+    """Метод парсинга окончательного письма пользователю"""
     try:
         name = homework['homework_name']
         status = homework['status']
