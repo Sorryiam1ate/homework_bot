@@ -14,11 +14,9 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO,
 )
-def_pr_tkn = "y0_AgAAAABcJqZuAAYckQLERTYcGZrWAADpcn3m0W9OmYQRvP1hFoLMPcD4IQ"
-def_tg_tkn = "1111728163:AAGMUrjW-plwGDnrMRTtcOYVb1d19D8zxME"
 
-PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN', default=def_pr_tkn)
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', default=def_tg_tkn)
+PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN', default="secret_key")
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', default="secret_key")
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', default=247178471)
 
 RETRY_PERIOD = 600
