@@ -16,8 +16,8 @@ logging.basicConfig(
 )
 
 PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN', default="secret_key")
-TELEGRAM_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', default="secret_key")
-TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', default=247178471)
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', default="secret_key")
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', default=257178471)
 
 RETRY_PERIOD = 600
 ENDPOINT = 'https://practicum.yandex.ru/api/user_api/homework_statuses/'
@@ -38,7 +38,6 @@ def check_tokens():
         and "TELEGRAM_BOT_TOKEN" in os.environ
     ):
         logging.info('Проверка токенов завершена!')
-        return True
     else:
         raise Exception(
             'Отсутствие одного или нескольких переменных окружения!'
@@ -114,7 +113,7 @@ def main():
     """Основная логика работы бота."""
     if (
         not PRACTICUM_TOKEN
-        or not TELEGRAM_TOKEN
+        or not TELEGRAM_BOT_TOKEN
         or not TELEGRAM_CHAT_ID
     ):
         logging.critical(
@@ -124,7 +123,7 @@ def main():
         raise Exception('Отсутствуют обязательные переменные окружения.')
     timestamp_default = 1549962000
     timestamp = timestamp_default
-    bot = TeleBot(TELEGRAM_TOKEN)
+    bot = TeleBot(TELEGRAM_BOT_TOKEN)
     while True:
         check_tokens()
         response = get_api_answer(timestamp)
