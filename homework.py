@@ -30,6 +30,7 @@ HOMEWORK_VERDICTS = {
 
 
 class BotLogicException(Exception):
+    """Исключение логики работы бота"""
     pass
 
 
