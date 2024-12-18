@@ -16,7 +16,7 @@ logging.basicConfig(
 )
 
 PRACTICUM_TOKEN = os.getenv('PRACTICUM_TOKEN', default="secret_key")
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', default="secret_key")
+TELEGRAM_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN', default="secret_key")
 TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID', default=257178471)
 
 RETRY_PERIOD = 600
@@ -34,14 +34,15 @@ HOMEWORK_VERDICTS = {
 def check_tokens():
     """Проверка на наличие необходимых токенов в файле переменных среды."""
     if (
-        "PRACTICUM_TOKEN" in os.environ
-        and "TELEGRAM_BOT_TOKEN" in os.environ
+        not PRACTICUM_TOKEN
+        or not TELEGRAM_TOKEN
+        or not TELEGRAM_CHAT_ID
     ):
-        logging.info('Проверка токенов завершена!')
-    else:
-        raise Exception(
-            'Отсутствие одного или нескольких переменных окружения!'
+        logging.critical(
+            'Убедитесь, что заданы все обязательные переменные окружения: '
+            'PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID.'
         )
+        raise Exception('Отсутствуют обязательные переменные окружения.')
 
 
 def get_api_answer(timestamp):
@@ -111,21 +112,11 @@ def parse_status(homework):
 
 def main():
     """Основная логика работы бота."""
-    if (
-        not PRACTICUM_TOKEN
-        or not TELEGRAM_BOT_TOKEN
-        or not TELEGRAM_CHAT_ID
-    ):
-        logging.critical(
-            'Убедитесь, что заданы все обязательные переменные окружения: '
-            'PRACTICUM_TOKEN, TELEGRAM_TOKEN, TELEGRAM_CHAT_ID.'
-        )
-        raise Exception('Отсутствуют обязательные переменные окружения.')
+    check_tokens()
     timestamp_default = 1549962000
     timestamp = timestamp_default
-    bot = TeleBot(TELEGRAM_BOT_TOKEN)
+    bot = TeleBot(TELEGRAM_TOKEN)
     while True:
-        check_tokens()
         response = get_api_answer(timestamp)
         check_response(response)
         if response.get('homeworks'):
