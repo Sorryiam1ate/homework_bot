@@ -29,11 +29,6 @@ HOMEWORK_VERDICTS = {
 }
 
 
-class BotLogicException(Exception):
-    """Исключение логики работы бота"""
-    pass
-
-
 def worng_token(token):
     logging.critical(
         f'Отсутствуют переменная окружения. {token}'
@@ -133,8 +128,6 @@ def main():
                 send_message(bot, parsed_status)
             else:
                 logging.debug('Список изменений домашних работ пуст')
-        except BotLogicException as e:
-            logging.error(f"Ошибка в процессе работы бота: {e}", exc_info=True)
         finally:
             timestamp = int(time.time())
             time.sleep(RETRY_PERIOD)
