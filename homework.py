@@ -41,12 +41,17 @@ def worng_token(token):
 
 def check_tokens():
     """Проверка на наличие необходимых токенов в файле переменных среды."""
+    missing_tokens = []
     if (not PRACTICUM_TOKEN):
-        worng_token(PRACTICUM_TOKEN)
+        missing_tokens.append("PRACTICUM_TOKEN")
     if (not TELEGRAM_TOKEN):
-        worng_token(TELEGRAM_TOKEN)
+        missing_tokens.append("TELEGRAM_TOKEN")
     if (not TELEGRAM_CHAT_ID):
-        worng_token(TELEGRAM_CHAT_ID)
+        missing_tokens.append("TELEGRAM_CHAT_ID")
+
+    if missing_tokens:
+        for token in missing_tokens:
+            worng_token(token)
 
 
 def get_api_answer(timestamp):
@@ -70,14 +75,13 @@ def check_response(response):
     if not isinstance(response, dict):
         raise TypeError(
             f'Тип ответа не соответствует ожидаемому, тип: {type(response)}')
-    if (not ('homeworks' in response)):
-        logging.error('Необходимые ключи отсутствуют!')
-        raise KeyError('Ключь отсутствует в словаре')
-    if not isinstance(response['homeworks'], list):
-        rsponse_type = response['homeworks']
+    if 'homeworks' not in response:
+        raise KeyError('Ключь "homework" отсутствует в словаре')
+    response_type = response['homeworks']
+    if not isinstance(response_type, list):
         raise TypeError(
             'Тип ответа не соответствует ожидаемому,'
-            f'тип: {type(rsponse_type)}'
+            f'тип: {type(response_type)}'
         )
 
 
@@ -96,18 +100,14 @@ def send_message(bot, message):
 def parse_status(homework):
     """Метод парсинга окончательного письма пользователю."""
     if 'homework_name' not in homework:
-        logging.error(
-            "Отсутствует ключ 'homework_name' в словаре"
-        )
         raise KeyError("Отсутствует ключ 'homework_name' в словаре")
 
     if 'status' not in homework:
-        logging.error(
-            "Отсутствует ключ 'status' в словаре"
-        )
+        raise KeyError("Отсутствует ключ 'status' в словаре")
+
     name = homework['homework_name']
     status = homework['status']
-    if homework['status'] not in HOMEWORK_VERDICTS:
+    if status not in HOMEWORK_VERDICTS:
         raise KeyError('Неизвестный статус')
     verdict = HOMEWORK_VERDICTS[status]
     message = f'Изменился статус проверки работы "{name}". {verdict}'
